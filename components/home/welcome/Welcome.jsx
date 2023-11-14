@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -13,8 +13,11 @@ import { useRouter } from "expo-router";
 import { icons, SIZES } from "../../../constants";
 import styles from "./welcome.style";
 
+const jobTypes = ["Full-time", "Part-time", "Contract-Based"];
+
 const Welcome = () => {
   const router = useRouter();
+  const [activeJobType, setActiveJobType] = useState("Full-time");
 
   return (
     <View>
@@ -23,30 +26,43 @@ const Welcome = () => {
         <Text style={styles.welcomeMessage}>Your dream job awaits</Text>
       </View>
 
-      <View style={styl.container}>
-        {/* <View style={styles.searchWrapper}> */}
-        <TextInput
-          style={styles.input}
-          placeholder="What you are looking for?"
-          placeholderTextColor="#888888"
+      <View style={styles.searchContainer}>
+        <View style={styles.searchWrapper}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="What are you looking for?"
+            placeholderTextColor="#7c7c7c"
+          />
+        </View>
+        <TouchableOpacity style={styles.searchBtn}>
+          <Image
+            source={icons.search}
+            resizeMode="contain"
+            style={styles.searchBtnImage}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.tabsContainer}>
+        <FlatList
+          data={jobTypes}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.tab(activeJobType, item)}
+              onPress={() => {
+                setActiveJobType(item);
+                //router.push(`/search/${item}`)
+              }}
+            >
+              <Text style={styles.tabText(activeJobType, item)}>{item}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item}
+          contentContainerStyle={{ columnGap: SIZES.small }}
+          horizontal
         />
-        {/* </View> */}
       </View>
     </View>
   );
 };
-
-const styl = StyleSheet.create({
-  container: {
-    backgroundColor: '#f2f2f2', // Light grey background color
-    padding: 15,
-    borderRadius: 8,
-    marginTop: 20
-  },
-  input: {
-    color: '#333333',
-    fontSize: 30, // Dark grey text color
-  },
-});
 
 export default Welcome;
