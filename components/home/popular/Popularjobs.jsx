@@ -13,12 +13,14 @@ import styles from "./popularjobs.style";
 import { useRouter } from "expo-router";
 import { isLoading } from "expo-font";
 import useFetch from "../../../hook/useFetch";
+import callFakeApi from "../../../hook/callFakeApi";
 
 const Popularjobs = () => {
-  const { data, isLoading, error } = useFetch("search", {
+  /* const { data, isLoading, error } = useFetch("search", {
     query: "react native developer",
     num_pages: 1,
-  });
+  }); */
+  const { data, isLoading, error } = callFakeApi();
   console.log(data);
 
   const [selectedJob, setSelectedJob] = useState();
